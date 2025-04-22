@@ -1,50 +1,31 @@
-name: Generate Game HTML Blocks
+name: Generate Game Blocks
 
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: '0 0 * * *'  # Runs every day at 00:00 UTC
+  workflow_dispatch:     # Allows manual run from GitHub interface
 
 jobs:
-  generate-html:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+    - name: Checkout this repo
+      uses: actions/checkout@v3
 
-      - name: Setup Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+    - name: Clone GameFiles repo
+      run: |
+        git clone https://github.com/touchmetender/GameFiles.git GameFiles
 
-      - name: Create HTML Game Blocks
-        run: |
-          mkdir -p generated
+    - name: Generate game blocks HTML
+      run: |
+        mkdir -p generated
+        python generate.py
 
-          echo "<!-- Auto-generated game blocks -->" > generated/games.html
-
-          for dir in games/*/; do
-            game_name=$(basename "$dir")
-            game_title=$(echo "$game_name" | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
-
-            cat <<EOF >> generated/games.html
-  <div class="grid-item" onclick="openGame('https://touchmetender.github.io/GameFiles/games/$game_name/index.html')">
-    <img src="https://touchmetender.github.io/GameFiles/games/$game_name/thumbnail.jpg" alt="$game_title" />
-    <div class="name">$game_title</div>
-  </div>
-EOF
-
-          done
-
-      - name: Commit & Push changes
-        run: |
-          git add generated/games.html
-
-          # Only commit if there are changes
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-          else
-            git commit -m "Auto-generate games.html"
-            git push
-          fi
+    - name: Commit and push changes
+      run: |
+        git config --global user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+        git add generated/games.html
+        git commit -m "Auto-update games.html"
+        git push
