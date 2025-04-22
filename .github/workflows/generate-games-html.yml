@@ -6,30 +6,45 @@ on:
       - main
 
 jobs:
-  build:
+  generate-html:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Generate HTML Blocks
+      - name: Setup Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create HTML Game Blocks
         run: |
           mkdir -p generated
+
           echo "<!-- Auto-generated game blocks -->" > generated/games.html
-          for game in games/*/; do
-            game_name=$(basename "$game")
+
+          for dir in games/*/; do
+            game_name=$(basename "$dir")
             game_title=$(echo "$game_name" | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')
-            echo "  <div class=\"grid-item\" onclick=\"openGame('https://touchmetender.github.io/GameFiles/games/$game_name/index.html')\">" >> generated/games.html
-            echo "    <img src='https://touchmetender.github.io/GameFiles/games/$game_name/thumbnail.jpg' alt='$game_title' />" >> generated/games.html
-            echo "    <div class='name'>$game_title</div>" >> generated/games.html
-            echo "  </div>" >> generated/games.html
+
+            cat <<EOF >> generated/games.html
+  <div class="grid-item" onclick="openGame('https://touchmetender.github.io/GameFiles/games/$game_name/index.html')">
+    <img src="https://touchmetender.github.io/GameFiles/games/$game_name/thumbnail.jpg" alt="$game_title" />
+    <div class="name">$game_title</div>
+  </div>
+EOF
+
           done
 
-      - name: Commit and Push Generated HTML
+      - name: Commit & Push changes
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add generated/games.html
-          git commit -m "Auto-generate game blocks"
-          git push
+
+          # Only commit if there are changes
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Auto-generate games.html"
+            git push
+          fi
