@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>GameFiles by Luna</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 10px;
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .game {
+      background: #222;
+      border-radius: 12px;
+      text-align: center;
+      padding: 10px;
+      transition: 0.2s;
+    }
+
+    .game:hover {
+      background: #333;
+      cursor: pointer;
+      transform: scale(1.05);
+    }
+
+    .game img {
+      width: 100%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .game .name {
+      margin-top: 8px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎮 Luna's Game Collection</h1>
+  <div class="grid">
+    <!-- Games start here -->
+    <a class="game" href="games/2048/index.html">
+      <img src="games/2048/thumbnail.jpg" alt="2048" />
+      <div class="name">2048</div>
+    </a>
+
+    <a class="game" href="games/HexGL/index.html">
+      <img src="games/HexGL/thumbnail.jpg" alt="HexGL" />
+      <div class="name">HexGL</div>
+    </a>
+
+    <a class="game" href="games/PixelDefense/index.html">
+      <img src="games/PixelDefense/thumbnail.jpg" alt="Pixel Defense" />
+      <div class="name">Pixel Defense</div>
+    </a>
+
+    <a class="game" href="games/SpaceInvaders/index.html">
+      <img src="games/SpaceInvaders/thumbnail.jpg" alt="Space Invaders" />
+      <div class="name">Space Invaders</div>
+    </a>
+
+    <a class="game" href="games/Breakout/index.html">
+      <img src="games/Breakout/thumbnail.jpg" alt="Breakout" />
+      <div class="name">Breakout</div>
+    </a>
+
+    <a class="game" href="games/AngryBirdClone/index.html">
+      <img src="games/AngryBirdClone/thumbnail.jpg" alt="Angry Bird Clone" />
+      <div class="name">Angry Bird Clone</div>
+    </a>
+
+    <a class="game" href="games/FlappyBirdClone/index.html">
+      <img src="games/FlappyBirdClone/thumbnail.jpg" alt="Flappy Bird" />
+      <div class="name">Flappy Bird</div>
+    </a>
+
+    <a class="game" href="games/Tetris/index.html">
+      <img src="games/Tetris/thumbnail.jpg" alt="Tetris" />
+      <div class="name">Tetris</div>
+    </a>
+    <!-- Add more games here using the same format -->
+  </div>
+</body>
+</html>
